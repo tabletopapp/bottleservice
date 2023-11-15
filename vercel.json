@@ -12,6 +12,6 @@
         }
     ],
     "env": {
-        "APP_MODULE": "main:app"
+        "APP_MODULE": "app.app:get_app"
     }
 }
