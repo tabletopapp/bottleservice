@@ -7,6 +7,6 @@ from app.database import db
 router = APIRouter()
 
 
-@router.post("/stub")
-def stub(session=Depends(db)):
-    """Write documentation here."""
+@router.get("/get_user")
+def get_user(session=Depends(db)):
+    return "Hello, World!"

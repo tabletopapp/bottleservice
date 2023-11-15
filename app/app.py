@@ -34,7 +34,7 @@ def get_app() -> FastAPI:
         openapi_url="/api/openapi.json",
     )
 
-    # load_all_models()
+    load_all_models()
 
     allowed_origins = [
         "http://localhost:3000",
