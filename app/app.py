@@ -25,6 +25,34 @@ def load_all_models() -> None:
         __import__(import_str)
 
 
+app = FastAPI(
+    title="bottle_service",
+    description="The TableTop Backend",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
+)
+
+load_all_models()
+
+allowed_origins = [
+    "http://localhost:3000",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=allowed_origins,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(
+    v1_router,
+    prefix="/v1",
+    tags=["v1"],
+)
+
+
 def get_app() -> FastAPI:
     app = FastAPI(
         title="bottle_service",
