@@ -19,4 +19,4 @@ class Club(Base):
     state = Column(String, nullable=False)
     zip_code = Column(String, nullable=False)
     phone_number = Column(String, nullable=True)
-    is_active = Column(Boolean, default=True)
+    is_active = Column(Boolean, nullable=False, default=True)
