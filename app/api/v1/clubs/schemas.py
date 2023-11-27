@@ -3,7 +3,24 @@
 from pydantic import BaseModel
 
 
-class Stub(BaseModel):
-    """Stub schema."""
+class ClubSchema(BaseModel):
+    id: int
+    name: str
+    address_line_1: str
+    address_line_2: str
+    city: str
+    state: str
+    zip_code: str
+    phone_number: str
+    is_active: bool
 
-    some_string: str
+    class Config:
+        orm_mode = True
+
+
+class GetClubsPayload(BaseModel):
+    club_name: str = None
+    party_size: int = None
+    budget_in_usd_cents: int = None
+    date: str = None
+    location: str = None
