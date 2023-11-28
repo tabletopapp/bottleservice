@@ -21,8 +21,8 @@ class ClubSchema(BaseModel):
 
 
 class GetClubsPayload(BaseModel):
-    club_name: str = None
-    party_size: int = None
-    budget_in_usd_cents: int = None
-    date: str = None
-    location: str = None
+    club_name: Optional[str] = None
+    party_size: Optional[int] = None
+    budget_in_usd_cents: Optional[int] = None
+    date: Optional[str] = None
+    location: Optional[str] = None
