@@ -9,4 +9,4 @@ router = APIRouter()
 
 @router.get("/get_user")
 def get_user(session=Depends(db)):
-    return "Hello, World!"
+    return "Hi there"

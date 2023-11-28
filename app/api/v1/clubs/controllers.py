@@ -11,7 +11,7 @@ from app.database import db
 router = APIRouter()
 
 
-@router.post("/get_clubs", response_model=List[ClubSchema])
+@router.get("/get_clubs", response_model=List[ClubSchema])
 def get_clubs(
     payload: GetClubsPayload,
     session=Depends(db),
