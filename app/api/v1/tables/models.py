@@ -1,6 +1,6 @@
 """DB Models for tables."""
 
-from sqlalchemy.sql.schema import Column, ForeignKey, PrimaryKeyConstraint
+from sqlalchemy.sql.schema import Column, ForeignKey
 from sqlalchemy.sql.sqltypes import Boolean, Integer, String
 
 from app.database import Base
@@ -18,18 +18,4 @@ class Table(Base):
     tier = Column(Integer, nullable=False)
     name = Column(String, nullable=False)
     is_active = Column(Boolean, nullable=False, default=True)
-
-
-class TierToNumTablesMapping(Base):
-    __tablename__ = "tier_to_num_tables_mappings"
-
-    club_id = Column(Integer, ForeignKey("clubs.id"), primary_key=True)
-    tier = Column(Integer, primary_key=True)
-    num_tables = Column(Integer, nullable=False)
-
-    __table_args__ = (
-        PrimaryKeyConstraint(
-            club_id,
-            tier,
-        ),
-    )
+    max_num_tables = Column(Integer, nullable=False, server_default="1")

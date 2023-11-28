@@ -18,6 +18,7 @@ class TableSchema(BaseModel):
     tier: int
     name: str
     is_active: bool
+    available: Optional[bool] = None
 
     class Config:
         from_attributes = True

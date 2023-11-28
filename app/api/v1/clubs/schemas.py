@@ -25,4 +25,4 @@ class GetClubsPayload(BaseModel):
     party_size: Optional[int] = None
     budget_in_usd_cents: Optional[int] = None
     date: Optional[str] = None
-    location: Optional[str] = None
+    city: Optional[str] = None
