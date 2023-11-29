@@ -15,6 +15,16 @@ from app.api.v1.tables.models import Table
 def create_booking(session: Session, payload: CreateBookingPayload) -> int:
     booking_datetime = datetime.strptime(payload.booking_datetime, "%Y-%m-%dT%H:%M:%S")
 
+    bookings_for_table_on_date: List[Booking] = get_bookings_for_table_on_date(
+        session,
+        payload.table_id,
+        booking_datetime.strftime("%Y-%m-%d"),
+    )
+
+    table: Table = Table.get(session, payload.table_id)
+    if len(bookings_for_table_on_date) >= table.max_num_tables:
+        raise AssertionError("Cannot book this table on this date/time.")
+
     booking = Booking(
         guest_id=payload.guest_id,
         table_id=payload.table_id,
