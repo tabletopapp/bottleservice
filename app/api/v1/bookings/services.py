@@ -37,6 +37,7 @@ def get_previous_bookings(
             Club.name.label("club_name"),
             Club.opening_time.label("opening_time"),
             Club.closing_time.label("closing_time"),
+            Club.banner_image_url.label("banner_image_url"),
             Table.num_seats.label("num_seats"),
         )
         .select_from(Booking)
@@ -53,10 +54,11 @@ def get_previous_bookings(
         return_values.append(
             BookingReturnPayload(
                 booking_id=result.booking_id,
-                guest_id=result.guest_id,
+                table_owner_id=result.guest_id,
                 table_id=result.table_id,
                 booking_datetime=result.booking_datetime,
                 club_name=result.club_name,
+                banner_image_url=result.banner_image_url,
                 opening_time=result.opening_time,
                 closing_time=result.closing_time,
                 num_seats=result.num_seats,
@@ -95,10 +97,11 @@ def get_upcoming_bookings(
         return_values.append(
             BookingReturnPayload(
                 booking_id=result.booking_id,
-                guest_id=result.guest_id,
+                table_owner_id=result.guest_id,
                 table_id=result.table_id,
                 booking_datetime=result.booking_datetime,
                 club_name=result.club_name,
+                banner_image_url=result.banner_image_url,
                 opening_time=result.opening_time,
                 closing_time=result.closing_time,
                 num_seats=result.num_seats,
