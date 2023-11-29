@@ -20,6 +20,11 @@ def create_booking(payload: CreateBookingPayload, session=Depends(db)):
     try:
         booking_id = services.create_booking(session, payload)
         return booking_id
+    except AssertionError as e:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"Error creating booking: {e}",
+        )
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
