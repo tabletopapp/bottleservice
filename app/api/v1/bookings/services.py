@@ -1,6 +1,6 @@
 """Services for bookings."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 from sqlalchemy import Date, cast
@@ -13,7 +13,7 @@ from app.api.v1.tables.models import Table
 
 
 def create_booking(session: Session, payload: CreateBookingPayload) -> int:
-    booking_datetime = datetime.strptime(payload.booking_datetime, "%Y-%m-%dT%H:%M:%S")
+    booking_datetime = datetime.fromisoformat(payload.booking_datetime)
 
     bookings_for_table_on_date: List[Booking] = get_bookings_for_table_on_date(
         session,
@@ -60,7 +60,7 @@ def get_previous_bookings(
         .join(Table, Table.id == Booking.table_id)
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
-        .filter(Booking.booking_datetime < datetime.now())
+        .filter(Booking.booking_datetime < datetime.now() - timedelta(days=1))
         .filter(Booking.guest_id == guest_id)
     )
     results = query.all()
@@ -114,7 +114,10 @@ def get_upcoming_bookings(
         .join(Table, Table.id == Booking.table_id)
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
-        .filter(Booking.booking_datetime >= datetime.now())
+        .filter(
+            Booking.booking_datetime
+            >= datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+        )
         .filter(Booking.guest_id == guest_id)
     )
     results = query.all()
