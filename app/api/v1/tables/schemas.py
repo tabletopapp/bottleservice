@@ -7,7 +7,7 @@ from pydantic import BaseModel
 
 class GetTablesPayload(BaseModel):
     club_id: int
-    date: str
+    date: str  # YYYY-MM-DD
     party_size: Optional[int] = None
 
 
@@ -18,6 +18,7 @@ class TableSchema(BaseModel):
     tier: int
     name: str
     is_active: bool
+    max_num_tables: int
     available: Optional[bool] = None
 
     class Config:
