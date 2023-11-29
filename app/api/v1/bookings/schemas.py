@@ -24,6 +24,11 @@ class BookingReturnPayload(BaseModel):
     opening_time: time
     closing_time: time
     num_seats: Optional[int] = None
+    address_line_1: str
+    address_line_2: Optional[str] = None
+    city: str
+    state: str
+    zip_code: str
 
 
 class GetAllBookingsPayload(BaseModel):
