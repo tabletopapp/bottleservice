@@ -20,7 +20,7 @@ class BookingReturnPayload(BaseModel):
     table_id: int
     booking_datetime: datetime
     club_name: str
-    banner_image_url: str
+    banner_image_url: Optional[str] = None
     opening_time: time
     closing_time: time
     num_seats: Optional[int] = None

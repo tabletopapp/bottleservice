@@ -79,6 +79,7 @@ def get_upcoming_bookings(
             Booking.table_id.label("table_id"),
             Booking.booking_datetime.label("booking_datetime"),
             Club.name.label("club_name"),
+            Club.banner_image_url.label("banner_image_url"),
             Club.opening_time.label("opening_time"),
             Club.closing_time.label("closing_time"),
             Table.num_seats.label("num_seats"),
