@@ -32,4 +32,4 @@ def get_clubs(session: Session, payload: GetClubsPayload) -> List[ClubSchema]:
     schema_results: List[ClubSchema] = [
         ClubSchema.model_validate(club) for club in results
     ]
-    return schema_results
+    return list(set(schema_results))

@@ -1,5 +1,6 @@
 """DB Models for clubs."""
 
+from sqlalchemy import Time
 from sqlalchemy.sql.schema import Column
 from sqlalchemy.sql.sqltypes import Boolean, Integer, String
 
@@ -20,3 +21,7 @@ class Club(Base):
     zip_code = Column(String, nullable=False)
     phone_number = Column(String, nullable=True)
     is_active = Column(Boolean, nullable=False, default=True)
+    pricing_tier = Column(Integer, nullable=True)  # higher is more expensive
+    opening_time = Column(Time, nullable=True)
+    closing_time = Column(Time, nullable=True)
+    banner_image_url = Column(String, nullable=True)
