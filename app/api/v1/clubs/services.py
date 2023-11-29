@@ -11,7 +11,9 @@ from app.api.v1.tables.models import Table
 
 def get_clubs(session: Session, payload: GetClubsPayload) -> List[ClubSchema]:
     query = (
-        session.query(Club)
+        session.query(
+            Club,
+        )
         .join(Table, Table.club_id == Club.id)
         .filter(Club.is_active == True)
     )
@@ -32,4 +34,4 @@ def get_clubs(session: Session, payload: GetClubsPayload) -> List[ClubSchema]:
     schema_results: List[ClubSchema] = [
         ClubSchema.model_validate(club) for club in results
     ]
-    return list(set(schema_results))
+    return schema_results
