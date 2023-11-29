@@ -25,8 +25,8 @@ def get_clubs(session: Session, payload: GetClubsPayload) -> List[ClubSchema]:
     if payload.budget_in_usd_cents:
         query = query.filter(Table.price_in_usd_cents <= payload.budget_in_usd_cents)
 
-    if payload.location:
-        query = query.filter(Club.city.ilike(f"%{payload.location}%"))
+    if payload.city:
+        query = query.filter(Club.city.ilike(f"%{payload.city}%"))
 
     results: List[Club] = query.all()
     schema_results: List[ClubSchema] = [
