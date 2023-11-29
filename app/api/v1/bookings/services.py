@@ -83,6 +83,11 @@ def get_upcoming_bookings(
             Club.banner_image_url.label("banner_image_url"),
             Club.opening_time.label("opening_time"),
             Club.closing_time.label("closing_time"),
+            Club.address_line_1.label("address_line_1"),
+            Club.address_line_2.label("address_line_2"),
+            Club.city.label("city"),
+            Club.state.label("state"),
+            Club.zip_code.label("zip_code"),
             Table.num_seats.label("num_seats"),
         )
         .select_from(Booking)
@@ -107,6 +112,11 @@ def get_upcoming_bookings(
                 opening_time=result.opening_time,
                 closing_time=result.closing_time,
                 num_seats=result.num_seats,
+                address_line_1=result.address_line_1,
+                address_line_2=result.address_line_2,
+                city=result.city,
+                state=result.state,
+                zip_code=result.zip_code,
             ),
         )
     return return_values
