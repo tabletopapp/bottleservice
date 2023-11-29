@@ -16,10 +16,11 @@ class CreateBookingPayload(BaseModel):
 
 class BookingReturnPayload(BaseModel):
     booking_id: int
-    guest_id: int
+    table_owner_id: int
     table_id: int
     booking_datetime: datetime
     club_name: str
+    banner_image_url: str
     opening_time: time
     closing_time: time
     num_seats: Optional[int] = None
