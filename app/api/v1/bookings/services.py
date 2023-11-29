@@ -3,6 +3,7 @@
 from datetime import datetime
 from typing import List
 
+from sqlalchemy import Date, cast
 from sqlalchemy.orm import Session
 
 from app.api.v1.bookings.models import Booking
@@ -12,7 +13,7 @@ from app.api.v1.tables.models import Table
 
 
 def create_booking(session: Session, payload: CreateBookingPayload) -> int:
-    booking_datetime = datetime.strptime(payload.booking_datetime, "%Y-%m-%d %H:%M:%S")
+    booking_datetime = datetime.strptime(payload.booking_datetime, "%Y-%m-%dT%H:%M:%S")
 
     booking = Booking(
         guest_id=payload.guest_id,
@@ -111,20 +112,17 @@ def get_upcoming_bookings(
     return return_values
 
 
-# def get_bookings_for_date(
-#     session: Session,
-#     guest_id: int,
-#     date: str, # YYYY-MM-DD
-# ):
-#     booking_date = datetime.strptime(date, "%Y-%m-%d")
-#     query = (
-#         session.query(Booking)
-#         .filter(Booking.is_active == True)
-#         .filter(cast(Booking.booking_datetime, Date) == booking_date)
-#         .filter(Booking.guest_id == guest_id)
-#     )
-#     results: List[Booking] = query.all()
-#     schema_results: List[BookingSchema] = [
-#         BookingSchema.model_validate(booking) for booking in results
-#     ]
-#     return schema_results
+def get_bookings_for_table_on_date(
+    session: Session,
+    table_id: int,
+    date: str,  # YYYY-MM-DD
+) -> List[Booking]:
+    booking_date = datetime.strptime(date, "%Y-%m-%d")
+    query = (
+        session.query(Booking)
+        .filter(Booking.is_active == True)
+        .filter(cast(Booking.booking_datetime, Date) == booking_date)
+        .filter(Booking.table_id == table_id)
+    )
+    results: List[Booking] = query.all()
+    return results
