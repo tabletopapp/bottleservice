@@ -20,6 +20,7 @@ class ClubSchema(BaseModel):
     opening_time: Optional[time] = None
     closing_time: Optional[time] = None
     banner_image_url: Optional[str] = None
+    open_now: Optional[bool] = None
 
     class Config:
         from_attributes = True
