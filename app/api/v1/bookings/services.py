@@ -1,6 +1,6 @@
 """Services for bookings."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import List
 
 from sqlalchemy import Date, cast
@@ -60,7 +60,10 @@ def get_previous_bookings(
         .join(Table, Table.id == Booking.table_id)
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
-        .filter(Booking.booking_datetime < datetime.now() - timedelta(days=1))
+        .filter(
+            Booking.booking_datetime
+            < datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+        )
         .filter(Booking.guest_id == guest_id)
     )
     results = query.all()
