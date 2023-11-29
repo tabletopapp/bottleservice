@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException, status
 
 from app.api.v1.bookings import services
 from app.api.v1.bookings.schemas import (
-    BookingSchema,
+    BookingReturnPayload,
     CreateBookingPayload,
-    GetBookingsPayload,
+    GetAllBookingsPayload,
 )
 from app.database import db
 
@@ -27,13 +27,13 @@ def create_booking(payload: CreateBookingPayload, session=Depends(db)):
         )
 
 
-@router.get("/get_previous_bookings", response_model=List[BookingSchema])
+@router.get("/get_previous_bookings", response_model=List[BookingReturnPayload])
 def get_previous_bookings(
-    payload: GetBookingsPayload,
+    payload: GetAllBookingsPayload,
     session=Depends(db),
 ):
     try:
-        results = services.get_previous_bookings(session, payload)
+        results = services.get_previous_bookings(session, payload.guest_id)
         return results
     except Exception as e:
         raise HTTPException(
@@ -42,13 +42,13 @@ def get_previous_bookings(
         )
 
 
-@router.get("/get_upcoming_bookings", response_model=List[BookingSchema])
+@router.get("/get_upcoming_bookings", response_model=List[BookingReturnPayload])
 def get_upcoming_bookings(
-    payload: GetBookingsPayload,
+    payload: GetAllBookingsPayload,
     session=Depends(db),
 ):
     try:
-        results = services.get_upcoming_bookings(session, payload)
+        results = services.get_upcoming_bookings(session, payload.guest_id)
         return results
     except Exception as e:
         raise HTTPException(

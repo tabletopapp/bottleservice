@@ -1,7 +1,9 @@
 """Services for clubs."""
 
+from datetime import datetime
 from typing import List
 
+import pytz
 from sqlalchemy.orm import Session
 
 from app.api.v1.clubs.models import Club
@@ -34,4 +36,25 @@ def get_clubs(session: Session, payload: GetClubsPayload) -> List[ClubSchema]:
     schema_results: List[ClubSchema] = [
         ClubSchema.model_validate(club) for club in results
     ]
+
+    LA_timezone = pytz.timezone("America/Los_Angeles")
+    LA_time = datetime.now(LA_timezone)
+
+    for club in schema_results:
+        opening_time = LA_time.replace(
+            hour=club.opening_time.hour,
+            minute=club.opening_time.minute,
+            second=club.opening_time.second,
+        )
+        closing_time = LA_time.replace(
+            day=LA_time.day + 1,
+            hour=club.closing_time.hour,
+            minute=club.closing_time.minute,
+            second=club.closing_time.second,
+        )
+        if opening_time < LA_time < closing_time:
+            club.open_now = True
+        else:
+            club.open_now = False
+
     return schema_results

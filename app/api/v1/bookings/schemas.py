@@ -1,6 +1,6 @@
 """Schemas for bookings."""
 
-from datetime import datetime
+from datetime import datetime, time
 from typing import Optional
 
 from pydantic import BaseModel
@@ -14,18 +14,21 @@ class CreateBookingPayload(BaseModel):
     # promoter_id: int
 
 
-class BookingSchema(BaseModel):
-    id: int
+class BookingReturnPayload(BaseModel):
+    booking_id: int
     guest_id: int
     table_id: int
     booking_datetime: datetime
-    num_guests: Optional[int] = None
-    # promoter_id: int
-    is_active: bool = True
-
-    class Config:
-        from_attributes = True
+    club_name: str
+    opening_time: time
+    closing_time: time
+    num_seats: Optional[int] = None
 
 
-class GetBookingsPayload(BaseModel):
+class GetAllBookingsPayload(BaseModel):
     guest_id: int
+
+
+class GetBookingsForDatePayload(BaseModel):
+    guest_id: int
+    date: str
