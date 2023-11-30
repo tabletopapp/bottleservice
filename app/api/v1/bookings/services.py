@@ -3,6 +3,7 @@
 from datetime import datetime
 from typing import List
 
+import pytz
 from sqlalchemy import Date, cast
 from sqlalchemy.orm import Session
 
@@ -39,6 +40,14 @@ def get_previous_bookings(
     session: Session,
     guest_id: int,
 ) -> List[BookingReturnPayload]:
+    LA_timezone = pytz.timezone("America/Los_Angeles")
+    LA_time = datetime.now(LA_timezone).replace(
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
+
     query = (
         session.query(
             Booking.id.label("booking_id"),
@@ -61,8 +70,7 @@ def get_previous_bookings(
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
         .filter(
-            Booking.booking_datetime
-            < datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+            Booking.booking_datetime < LA_time,
         )
         .filter(Booking.guest_id == guest_id)
     )
@@ -96,6 +104,13 @@ def get_upcoming_bookings(
     session: Session,
     guest_id: int,
 ) -> List[BookingReturnPayload]:
+    LA_timezone = pytz.timezone("America/Los_Angeles")
+    LA_time = datetime.now(LA_timezone).replace(
+        hour=0,
+        minute=0,
+        second=0,
+        microsecond=0,
+    )
     query = (
         session.query(
             Booking.id.label("booking_id"),
@@ -118,8 +133,7 @@ def get_upcoming_bookings(
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
         .filter(
-            Booking.booking_datetime
-            >= datetime.now().replace(hour=0, minute=0, second=0, microsecond=0),
+            Booking.booking_datetime >= LA_time,
         )
         .filter(Booking.guest_id == guest_id)
     )
