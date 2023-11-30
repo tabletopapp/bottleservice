@@ -1,6 +1,6 @@
 """Services for bookings."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List
 
 import pytz
@@ -70,32 +70,40 @@ def get_previous_bookings(
         .join(Club, Club.id == Table.club_id)
         .filter(Booking.is_active == True)
         .filter(
-            Booking.booking_datetime < LA_time,
+            Booking.booking_datetime + timedelta(hours=7) < LA_time,
         )
         .filter(Booking.guest_id == guest_id)
     )
     results = query.all()
 
+    print(LA_time)
+    print((results[0].booking_datetime + timedelta(hours=7)).astimezone(LA_timezone))
+    print(
+        LA_time
+        > (results[0].booking_datetime + timedelta(hours=7)).astimezone(LA_timezone),
+    )
+
     return_values: List[BookingReturnPayload] = []
     for result in results:
-        return_values.append(
-            BookingReturnPayload(
-                booking_id=result.booking_id,
-                table_owner_id=result.guest_id,
-                table_id=result.table_id,
-                booking_datetime=result.booking_datetime,
-                club_name=result.club_name,
-                banner_image_url=result.banner_image_url,
-                opening_time=result.opening_time,
-                closing_time=result.closing_time,
-                num_seats=result.num_seats,
-                address_line_1=result.address_line_1,
-                address_line_2=result.address_line_2,
-                city=result.city,
-                state=result.state,
-                zip_code=result.zip_code,
-            ),
-        )
+        if LA_time > (result.booking_datetime).astimezone(LA_timezone):
+            return_values.append(
+                BookingReturnPayload(
+                    booking_id=result.booking_id,
+                    table_owner_id=result.guest_id,
+                    table_id=result.table_id,
+                    booking_datetime=result.booking_datetime,
+                    club_name=result.club_name,
+                    banner_image_url=result.banner_image_url,
+                    opening_time=result.opening_time,
+                    closing_time=result.closing_time,
+                    num_seats=result.num_seats,
+                    address_line_1=result.address_line_1,
+                    address_line_2=result.address_line_2,
+                    city=result.city,
+                    state=result.state,
+                    zip_code=result.zip_code,
+                ),
+            )
 
     return return_values
 
